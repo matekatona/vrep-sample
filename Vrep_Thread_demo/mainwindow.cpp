@@ -12,6 +12,9 @@ MainWindow::~MainWindow()
 {
     this->socket1.disconnectFromHost();
     this->socket2.disconnectFromHost();
+    this->max1 = 0;
+    this->max2 = 0;
+    this->counter = 0;
     delete ui;
 }
 
@@ -43,10 +46,35 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::readyRead1()
 {
-    ui->textEdit->setText(this->socket1.readLine());
+    QByteArray line = this->socket1.readLine();
+    QString actualTimeString = line.split(':').at(1);
+    float actualTime = actualTimeString.toFloat();
+    qDebug() << actualTime << " <==> " << this->max1;
+    if(actualTime > this->max1)
+    {
+        ui->textEdit->setText(line);
+        this->max1 = actualTime;
+    }
+    if(this->counter>9)
+    {
+        this->counter = 0;
+        this->max1 = 0;
+    }
+    else
+    {
+        this->counter++;
+    }
 }
 
 void MainWindow::readyRead2()
 {
-    ui->textEdit_2->setText(this->socket2.readLine());
+    QByteArray line = this->socket2.readLine();
+    QString actualTimeString = line.split(':').at(1);
+    float actualTime = actualTimeString.toFloat();
+    ui->textEdit_2->setText(line);
+    qDebug() << actualTime << " <==> " << this->max2;
+    if(actualTime > this->max2)
+    {
+        this->max2 = actualTime;
+    }
 }

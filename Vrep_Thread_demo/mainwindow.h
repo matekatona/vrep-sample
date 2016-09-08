@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTcpSocket>  // requires QT += network in .pro file!!!
+#include <QDebug>
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,9 @@ private:
 
     QTcpSocket socket1;
     QTcpSocket socket2;
+    float max1;
+    float max2;
+    uint counter;
 };
 
 #endif // MAINWINDOW_H
